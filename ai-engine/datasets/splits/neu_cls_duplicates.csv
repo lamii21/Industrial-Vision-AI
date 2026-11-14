@@ -1,0 +1,3 @@
+i,j,kind,hamming,correlation,transform,file_i,file_j,label_i,label_j
+603,607,exact,0,1.0,0,patches_101.jpg,patches_105.jpg,patches,patches
+1648,1664,near,2,0.9574521609451885,1,scratches_232.jpg,scratches_247.jpg,scratches,scratches

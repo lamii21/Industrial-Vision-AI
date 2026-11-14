@@ -1,0 +1,27 @@
+# Direct dependencies of the AI engine (pinned versions actually tested in Phase 1).
+# PyTorch is installed first, from the CUDA wheel index (see docs/phase1.md):
+#   pip install torch==2.14.1 torchvision==0.29.1 --index-url https://download.pytorch.org/whl/cu130
+# requirements-lock.txt contains the full transitive lock (pip freeze).
+
+# Scientific stack
+numpy==2.5.4
+pandas==3.1.1
+scipy==1.18.1
+scikit-learn==1.9.1
+matplotlib==3.11.2
+
+# Images
+pillow==13.0.0
+opencv-python-headless==5.0.0.93
+
+# Config / utilities
+PyYAML==6.0.3
+tqdm==4.70.1
+
+# Notebooks
+jupyterlab==4.6.6
+ipykernel==7.4.0
+nbconvert==7.17.2
+
+# Tests
+pytest==9.2.0

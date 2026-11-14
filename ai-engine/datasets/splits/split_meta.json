@@ -1,0 +1,28 @@
+{
+  "dataset": "NEU-CLS",
+  "source_url": "https://ndownloader.figshare.com/files/54094775",
+  "archive_md5": "19af5a1250d8ab0cb0828d31ee2b349d",
+  "seed": 42,
+  "val_ratio": 0.15,
+  "test_ratio": 0.15,
+  "classes": [
+    "crazing",
+    "inclusion",
+    "patches",
+    "pitted_surface",
+    "rolled-in_scale",
+    "scratches"
+  ],
+  "counts": {
+    "train": 1260,
+    "val": 270,
+    "test": 270
+  },
+  "duplicate_pairs": 2,
+  "csv_sha256": {
+    "train": "4fe35cb0851f5ec5c5efec7d0e4cdb28c513b30c47f8b3af9f3f6d0cd9fd6baf",
+    "val": "1342872bbac2b5d8a5906014b6738d2da32362c85e020e72b2e8eeb8e3414283",
+    "test": "8dae6ea6bf731726afd1263018551c3476ea04f4325db9445e04f238a9f6a0c8"
+  },
+  "created_utc": "2026-11-14T17:23:00+00:00"
+}

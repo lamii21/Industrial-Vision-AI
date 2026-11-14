@@ -1,0 +1,13 @@
+# Normalise text files to LF in the repository and in every working copy
+# (identical files on Windows, Linux and macOS).
+* text=auto eol=lf
+
+# Split / index files are stored byte-for-byte: their SHA-256 is recorded in
+# split_meta.json and must stay identical after any clone or checkout.
+ai-engine/datasets/splits/*.csv -text
+ai-engine/datasets/splits/*.json -text
+
+# Binary assets
+*.png binary
+*.jpg binary
+*.pt binary

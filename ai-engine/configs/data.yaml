@@ -1,0 +1,33 @@
+# Data configuration for NEU-CLS (Phase 1).
+# Every value that influences the split is stored here so the split is reproducible.
+
+dataset:
+  name: NEU-CLS
+  # Mirror of the Northeastern University surface defect database (CC BY 4.0).
+  # Official source (Google Drive / Baidu Pan, manual download):
+  #   https://faculty.neu.edu.cn/songkechen/zh_CN/zhym/263269/list/index.htm
+  source_url: https://ndownloader.figshare.com/files/54094775
+  source_page: https://figshare.com/articles/dataset/NEU-CLS/28903550
+  md5: 19af5a1250d8ab0cb0828d31ee2b349d
+  # Class order = class index used by every model. Never reorder after training.
+  classes:
+    - crazing
+    - inclusion
+    - patches
+    - pitted_surface
+    - rolled-in_scale
+    - scratches
+  expected_per_class: 300
+  expected_size: [200, 200]
+
+split:
+  seed: 42
+  val_ratio: 0.15
+  test_ratio: 0.15
+
+duplicates:
+  # Candidate near-duplicates: perceptual hash (64 bits) Hamming distance <= this value.
+  phash_max_distance: 6
+  # A candidate is confirmed only if the pixel-level Pearson correlation is >= this value.
+  # The two-step check avoids false positives on very regular textures.
+  min_pixel_correlation: 0.95

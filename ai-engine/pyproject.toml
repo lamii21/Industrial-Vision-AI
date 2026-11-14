@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ivai"
+version = "0.1.0"
+description = "Industrial Vision AI - deep learning engine for surface defect classification"
+requires-python = ">=3.11"
+# Exact versions are pinned in requirements.txt; PyTorch is installed separately
+# from the CUDA wheel index (see docs/phase1.md).
+
+[tool.setuptools.packages.find]
+include = ["ivai*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
