@@ -120,7 +120,9 @@ def fit(
     for epoch in range(1, cfg.max_epochs + 1):
         t0 = time.perf_counter()
         lr = optimizer.param_groups[0]["lr"]
-        group_lrs = {f"lr_{g.get('name', i)}": g["lr"] for i, g in enumerate(optimizer.param_groups)}             if len(optimizer.param_groups) > 1 else {}
+        group_lrs = {}  # one column per group when there are several (Phase 2 history keeps its columns)
+        if len(optimizer.param_groups) > 1:
+            group_lrs = {f"lr_{g.get('name', i)}": g["lr"] for i, g in enumerate(optimizer.param_groups)}
         tr_loss, tr_acc = train_one_epoch(model, train_loader, criterion, optimizer, scaler, device, cfg.amp)
         val = evaluate(model, val_loader, criterion, device, cfg.amp)
         scheduler.step(val.loss)
