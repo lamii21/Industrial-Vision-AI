@@ -25,6 +25,10 @@ class TrainConfig:
     early_stopping_patience: int = 8
     min_delta: float = 0.0
     amp: bool = True
+    # Phase 3: learning rate of the classification head when it differs from ``lr``
+    # (fine-tuning: backbone at ``lr``, head at ``head_lr``). The groups themselves are
+    # built by ``ivai.models.registry.parameter_groups`` and passed to ``fit``.
+    head_lr: float | None = None
 
 
 @dataclass
@@ -87,11 +91,20 @@ def fit(
     device: torch.device,
     checkpoint_path: Path,
     log=print,
+    param_groups: list[dict] | None = None,
 ) -> dict:
-    """Train with validation-loss model selection. Returns the history and timings."""
+    """Train with validation-loss model selection. Returns the history and timings.
+
+    ``param_groups=None`` is the historical Phase 2 path: ``Adam(model.parameters())``
+    with a single learning rate. Otherwise the given groups (each with its own ``lr``)
+    are used; ReduceLROnPlateau then scales every group by the same factor.
+    """
     model.to(device)
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
+    if param_groups is None:
+        optimizer = torch.optim.Adam(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
+    else:
+        optimizer = torch.optim.Adam(param_groups, lr=cfg.lr, weight_decay=cfg.weight_decay)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, mode="min", factor=cfg.scheduler_factor, patience=cfg.scheduler_patience, min_lr=cfg.min_lr
     )
@@ -107,6 +120,7 @@ def fit(
     for epoch in range(1, cfg.max_epochs + 1):
         t0 = time.perf_counter()
         lr = optimizer.param_groups[0]["lr"]
+        group_lrs = {f"lr_{g.get('name', i)}": g["lr"] for i, g in enumerate(optimizer.param_groups)}             if len(optimizer.param_groups) > 1 else {}
         tr_loss, tr_acc = train_one_epoch(model, train_loader, criterion, optimizer, scaler, device, cfg.amp)
         val = evaluate(model, val_loader, criterion, device, cfg.amp)
         scheduler.step(val.loss)
@@ -114,7 +128,7 @@ def fit(
         if device.type == "cuda":
             torch.cuda.synchronize()
         dt = time.perf_counter() - t0
-        history.append({"epoch": epoch, "lr": lr, "train_loss": tr_loss, "train_acc": tr_acc,
+        history.append({"epoch": epoch, "lr": lr, **group_lrs, "train_loss": tr_loss, "train_acc": tr_acc,
                         "val_loss": val.loss, "val_acc": val.accuracy, "epoch_time_s": dt, "best": improved})
         log(f"epoch {epoch:02d} | lr {lr:.1e} | train loss {tr_loss:.4f} acc {tr_acc:.4f} | "
             f"val loss {val.loss:.4f} acc {val.accuracy:.4f} | {dt:.1f}s{'  *best*' if improved else ''}")

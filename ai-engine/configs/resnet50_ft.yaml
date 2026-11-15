@@ -1,0 +1,39 @@
+# Phase 3 - ResNet50 fine-tuning (E1, E3). ImageNet IMAGENET1K_V1 weights.
+# Frozen protocol: docs/phase3_protocol.md §6. Every value is recorded in run.json.
+
+experiment: resnet50_ft
+
+model:
+  name: resnet50
+  num_classes: 6
+  pretrained: true
+  freeze_backbone: false
+
+data:
+  batch_size: 32
+  # Same train-only augmentations as Phase 2 (justified in configs/custom_cnn.yaml).
+  augment:
+    hflip: 0.5
+    vflip: 0.5
+    brightness: 0.2
+    contrast: 0.2
+  # Grey channel replicated to 3 channels + ImageNet normalisation (protocol §4),
+  # identical for the pretrained and from-scratch torchvision models.
+  input:
+    channels: 3
+    normalization: imagenet
+
+training:
+  max_epochs: 60            # virtual epochs of 1 260 samples in E3 (40 steps each)
+  lr: 1.0e-4     # backbone
+  head_lr: 1.0e-3          # new 6-class head (fc)
+  weight_decay: 0.0
+  scheduler_factor: 0.5     # ReduceLROnPlateau on val loss, applied to every group
+  scheduler_patience: 3
+  min_lr: 1.0e-6
+  early_stopping_patience: 8
+  min_delta: 0.0
+  amp: true
+  deterministic: true
+
+seeds: [42, 123, 2026]
