@@ -45,8 +45,35 @@ def load_train_stats(splits_dir: Path = SPLITS_DIR) -> tuple[float, float]:
     return float(stats["mean"]), float(stats["std"])
 
 
-def build_transforms(train: bool, mean: float, std: float, aug: dict | None = None) -> v2.Compose:
-    """uint8 tensor (1,H,W) -> normalised float tensor. Augmentations only if ``train``."""
+# ImageNet statistics expected by the torchvision pretrained weights (Phase 3).
+IMAGENET_MEAN = (0.485, 0.456, 0.406)
+IMAGENET_STD = (0.229, 0.224, 0.225)
+
+
+def resolve_normalization(normalization: str, splits_dir: Path = SPLITS_DIR) -> tuple:
+    """``"dataset"`` -> train statistics of Phase 1 (floats, 1 channel);
+    ``"imagenet"`` -> ImageNet statistics (3-tuples, 3 channels)."""
+    if normalization == "dataset":
+        return load_train_stats(splits_dir)
+    if normalization == "imagenet":
+        return IMAGENET_MEAN, IMAGENET_STD
+    raise ValueError(f"Unknown normalization {normalization!r}")
+
+
+def _gray_to_rgb(x: torch.Tensor) -> torch.Tensor:
+    """(1,H,W) -> (3,H,W): the grey channel is replicated (pretrained models expect RGB)."""
+    return x.repeat(3, 1, 1)
+
+
+def build_transforms(train: bool, mean, std, aug: dict | None = None, channels: int = 1) -> v2.Compose:
+    """uint8 tensor (1,H,W) -> normalised float tensor. Augmentations only if ``train``.
+
+    ``channels=1`` with float ``mean``/``std`` is the Phase 2 pipeline (unchanged).
+    ``channels=3``: the augmented grey image is replicated to 3 channels just before the
+    normalisation (``mean``/``std`` are then 3-tuples, e.g. ImageNet statistics).
+    """
+    if channels not in (1, 3):
+        raise ValueError("channels must be 1 or 3")
     ops: list = [v2.ToDtype(torch.float32, scale=True)]  # [0,255] -> [0,1]
     if train and aug:
         if aug.get("hflip", 0) > 0:
@@ -57,7 +84,13 @@ def build_transforms(train: bool, mean: float, std: float, aug: dict | None = No
         if b or c:
             ops.append(v2.ColorJitter(brightness=b, contrast=c))
             ops.append(v2.Lambda(lambda x: x.clamp(0.0, 1.0)))
-    ops.append(v2.Normalize(mean=[mean], std=[std]))
+    if channels == 3:
+        ops.append(v2.Lambda(_gray_to_rgb))
+    mean_l = list(mean) if isinstance(mean, (list, tuple)) else [mean]
+    std_l = list(std) if isinstance(std, (list, tuple)) else [std]
+    if len(mean_l) != channels or len(std_l) != channels:
+        raise ValueError(f"mean/std must have {channels} value(s)")
+    ops.append(v2.Normalize(mean=mean_l, std=std_l))
     return v2.Compose(ops)
 
 
