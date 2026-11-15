@@ -1,0 +1,191 @@
+{
+  "experiment": "custom_cnn",
+  "run": "seed_123",
+  "created_utc": "2026-11-14T19:23:48+00:00",
+  "architecture": {
+    "name": "custom_cnn",
+    "config": {
+      "name": "custom_cnn",
+      "in_channels": 1,
+      "num_classes": 6,
+      "channels": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "dropout": 0.5
+    },
+    "repr": "CustomCNN(\n  (features): Sequential(\n    (0): ConvBlock(\n      (0): Conv2d(1, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)\n      (1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, bias=True, track_running_stats=True)\n      (2): ReLU(inplace=True)\n      (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)\n    )\n    (1): ConvBlock(\n      (0): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)\n      (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, bias=True, track_running_stats=True)\n      (2): ReLU(inplace=True)\n      (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)\n    )\n    (2): ConvBlock(\n      (0): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)\n      (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, bias=True, track_running_stats=True)\n      (2): ReLU(inplace=True)\n      (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)\n    )\n    (3): ConvBlock(\n      (0): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)\n      (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, bias=True, track_running_stats=True)\n      (2): ReLU(inplace=True)\n      (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)\n    )\n  )\n  (dropout): Dropout(p=0.5, inplace=False)\n  (classifier): Linear(in_features=256, out_features=6, bias=True)\n)",
+    "parameters": {
+      "total": 389862,
+      "trainable": 389862,
+      "non_trainable_buffers": 964
+    },
+    "receptive_field": {
+      "receptive_field": 46,
+      "cumulative_stride": 16,
+      "measured_geometric": 46
+    }
+  },
+  "hyperparameters": {
+    "batch_size": 32,
+    "optimizer": "Adam",
+    "loss": "CrossEntropyLoss",
+    "scheduler": "ReduceLROnPlateau(val_loss)",
+    "selection": "min val_loss",
+    "max_epochs": 60,
+    "lr": 0.001,
+    "weight_decay": 0.0,
+    "scheduler_factor": 0.5,
+    "scheduler_patience": 3,
+    "min_lr": 1e-06,
+    "early_stopping_patience": 8,
+    "min_delta": 0.0,
+    "amp": true,
+    "deterministic": true,
+    "augment": {
+      "hflip": 0.5,
+      "vflip": 0.5,
+      "brightness": 0.2,
+      "contrast": 0.2
+    }
+  },
+  "seed": 123,
+  "data": {
+    "train_size": 1260,
+    "val_size": 270,
+    "test_used": false,
+    "normalization": {
+      "mean": 0.5043107165421724,
+      "std": 0.212539216130989,
+      "source": "train_pixel_stats.json"
+    },
+    "split_csv_sha256": {
+      "train": "4fe35cb0851f5ec5c5efec7d0e4cdb28c513b30c47f8b3af9f3f6d0cd9fd6baf",
+      "val": "1342872bbac2b5d8a5906014b6738d2da32362c85e020e72b2e8eeb8e3414283",
+      "test": "8dae6ea6bf731726afd1263018551c3476ea04f4325db9445e04f238a9f6a0c8"
+    }
+  },
+  "environment": {
+    "torch": "2.14.1+cu130",
+    "cuda": "13.0",
+    "cudnn": 92400,
+    "device": "cuda",
+    "device_name": "NVIDIA RTX A2000 8GB Laptop GPU",
+    "python": "3.12.8",
+    "ivai": "0.1.0",
+    "deterministic": true
+  },
+  "training": {
+    "best_epoch": 57,
+    "epochs_run": 60,
+    "stopped_early": false,
+    "train_time_s": 349.74,
+    "mean_epoch_time_s": 5.829,
+    "peak_gpu_memory_mb": 566.123046875,
+    "train_loss_at_best": 0.039045328292108716,
+    "train_acc_at_best": 0.9888888888888889
+  },
+  "best_validation_metrics": {
+    "accuracy": 0.9962962962962963,
+    "precision_macro": 0.9963768115942028,
+    "recall_macro": 0.9962962962962963,
+    "f1_macro": 0.9962958389924682,
+    "per_class": {
+      "crazing": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 45
+      },
+      "inclusion": {
+        "precision": 0.9782608695652174,
+        "recall": 1.0,
+        "f1": 0.989010989010989,
+        "support": 45
+      },
+      "patches": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 45
+      },
+      "pitted_surface": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 45
+      },
+      "rolled-in_scale": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 45
+      },
+      "scratches": {
+        "precision": 1.0,
+        "recall": 0.9777777777777777,
+        "f1": 0.9887640449438202,
+        "support": 45
+      }
+    },
+    "confusion_matrix": [
+      [
+        45,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        45,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        45,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        45,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        45,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        44
+      ]
+    ],
+    "n_samples": 270,
+    "n_errors": 1,
+    "loss": 0.022843174691553468,
+    "accuracy_mono_defect_images": 0.9959677419354839,
+    "accuracy_multi_defect_images": 1.0,
+    "n_multi_defect_images": 22
+  },
+  "checkpoint": "artifacts/models/custom_cnn/seed_123/best.pt"
+}

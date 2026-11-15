@@ -1,0 +1,38 @@
+# Phase 2 - Custom CNN baseline. Every value is recorded in run.json.
+
+experiment: custom_cnn
+
+model:
+  name: custom_cnn
+  in_channels: 1
+  num_classes: 6
+  channels: [32, 64, 128, 256]
+  dropout: 0.5
+
+data:
+  batch_size: 32
+  # Train only. Justified by scripts/analyze_augmentations.py (train split):
+  # - flips keep the texture orientation (rolled-in_scale horizontal, others vertical);
+  # - no class has a significant top/bottom asymmetry -> vflip is label-preserving;
+  # - the left/right asymmetry is the dark right edge (illumination artefact shared
+  #   by all classes) -> hflip makes the model invariant to it;
+  # - NO 90-degree rotation: it would swap the orientation that separates classes.
+  augment:
+    hflip: 0.5
+    vflip: 0.5
+    brightness: 0.2   # factor in [0.8, 1.2] - counters the brightness shortcut seen in EDA
+    contrast: 0.2
+
+training:
+  max_epochs: 60            # was 30: budget was binding (see custom_cnn_30ep.yaml)
+  lr: 0.001
+  weight_decay: 0.0
+  scheduler_factor: 0.5     # ReduceLROnPlateau on val loss
+  scheduler_patience: 3
+  min_lr: 1.0e-6
+  early_stopping_patience: 8
+  min_delta: 0.0
+  amp: true
+  deterministic: true
+
+seeds: [42, 123, 2026]

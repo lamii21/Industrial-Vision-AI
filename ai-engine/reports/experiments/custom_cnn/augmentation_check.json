@@ -1,0 +1,74 @@
+[
+  {
+    "class": "crazing",
+    "orientation_mean": 0.072,
+    "share_vertical_dominant": 0.986,
+    "orientation_after_hflip": 0.072,
+    "orientation_after_vflip": 0.072,
+    "orientation_after_rot90": -0.072,
+    "lr_asymmetry": 7.16,
+    "lr_null95": 5.12,
+    "tb_asymmetry": 2.34,
+    "tb_null95": 2.38
+  },
+  {
+    "class": "inclusion",
+    "orientation_mean": 0.148,
+    "share_vertical_dominant": 0.905,
+    "orientation_after_hflip": 0.148,
+    "orientation_after_vflip": 0.148,
+    "orientation_after_rot90": -0.148,
+    "lr_asymmetry": 7.72,
+    "lr_null95": 2.7,
+    "tb_asymmetry": 1.23,
+    "tb_null95": 2.12
+  },
+  {
+    "class": "patches",
+    "orientation_mean": 0.121,
+    "share_vertical_dominant": 1.0,
+    "orientation_after_hflip": 0.121,
+    "orientation_after_vflip": 0.121,
+    "orientation_after_rot90": -0.121,
+    "lr_asymmetry": 9.08,
+    "lr_null95": 7.38,
+    "tb_asymmetry": 3.45,
+    "tb_null95": 4.47
+  },
+  {
+    "class": "pitted_surface",
+    "orientation_mean": 0.159,
+    "share_vertical_dominant": 0.938,
+    "orientation_after_hflip": 0.159,
+    "orientation_after_vflip": 0.159,
+    "orientation_after_rot90": -0.159,
+    "lr_asymmetry": 15.9,
+    "lr_null95": 4.83,
+    "tb_asymmetry": 3.96,
+    "tb_null95": 5.11
+  },
+  {
+    "class": "rolled-in_scale",
+    "orientation_mean": -0.209,
+    "share_vertical_dominant": 0.0,
+    "orientation_after_hflip": -0.209,
+    "orientation_after_vflip": -0.209,
+    "orientation_after_rot90": 0.209,
+    "lr_asymmetry": 3.86,
+    "lr_null95": 2.27,
+    "tb_asymmetry": 1.31,
+    "tb_null95": 1.37
+  },
+  {
+    "class": "scratches",
+    "orientation_mean": 0.187,
+    "share_vertical_dominant": 0.719,
+    "orientation_after_hflip": 0.187,
+    "orientation_after_vflip": 0.187,
+    "orientation_after_rot90": -0.187,
+    "lr_asymmetry": 5.92,
+    "lr_null95": 3.42,
+    "tb_asymmetry": 1.45,
+    "tb_null95": 2.46
+  }
+]

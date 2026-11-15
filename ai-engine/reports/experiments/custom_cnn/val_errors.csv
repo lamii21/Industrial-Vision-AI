@@ -1,0 +1,12 @@
+experiment,run,filename,true,pred,confidence,multi_defect
+custom_cnn,seed_123,scratches_44.jpg,scratches,inclusion,0.909,False
+custom_cnn,seed_2026,scratches_44.jpg,scratches,inclusion,0.937,False
+custom_cnn,seed_2026,scratches_76.jpg,scratches,inclusion,0.611,False
+custom_cnn,seed_42,scratches_44.jpg,scratches,inclusion,0.927,False
+custom_cnn_30ep,seed_123,scratches_44.jpg,scratches,inclusion,0.908,False
+custom_cnn_30ep,seed_123,scratches_76.jpg,scratches,inclusion,0.486,False
+custom_cnn_30ep,seed_2026,pitted_surface_299.jpg,pitted_surface,inclusion,0.47,False
+custom_cnn_30ep,seed_2026,scratches_44.jpg,scratches,inclusion,0.944,False
+custom_cnn_30ep,seed_2026,scratches_76.jpg,scratches,inclusion,0.634,False
+custom_cnn_30ep,seed_42,pitted_surface_299.jpg,pitted_surface,inclusion,0.442,False
+custom_cnn_30ep,seed_42,scratches_44.jpg,scratches,inclusion,0.932,False

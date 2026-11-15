@@ -1,0 +1,186 @@
+{
+  "experiment": "custom_cnn_30ep",
+  "seeds": [
+    42,
+    123,
+    2026
+  ],
+  "n_runs": 3,
+  "split": "validation",
+  "std": "sample standard deviation (ddof=1)",
+  "per_seed": [
+    {
+      "seed": 42,
+      "accuracy": 0.9925925925925926,
+      "precision_macro": 0.9929078014184398,
+      "recall_macro": 0.9925925925925926,
+      "f1_macro": 0.992631493242143,
+      "loss": 0.03343810946853073,
+      "n_errors": 2,
+      "best_epoch": 30,
+      "epochs_run": 30,
+      "stopped_early": false,
+      "train_time_s": 136.78,
+      "acc_multi_defect": 1.0
+    },
+    {
+      "seed": 123,
+      "accuracy": 0.9925925925925926,
+      "precision_macro": 0.9929078014184398,
+      "recall_macro": 0.9925925925925926,
+      "f1_macro": 0.9925889328063241,
+      "loss": 0.04675140049722459,
+      "n_errors": 2,
+      "best_epoch": 25,
+      "epochs_run": 30,
+      "stopped_early": false,
+      "train_time_s": 161.57,
+      "acc_multi_defect": 1.0
+    },
+    {
+      "seed": 2026,
+      "accuracy": 0.9888888888888889,
+      "precision_macro": 0.9895833333333334,
+      "recall_macro": 0.9888888888888889,
+      "f1_macro": 0.9889631179500697,
+      "loss": 0.039970959998943185,
+      "n_errors": 3,
+      "best_epoch": 30,
+      "epochs_run": 30,
+      "stopped_early": false,
+      "train_time_s": 146.77,
+      "acc_multi_defect": 1.0
+    }
+  ],
+  "mean_std": {
+    "accuracy": {
+      "mean": 0.9913580246913579,
+      "std": 0.0021383343303319185
+    },
+    "precision_macro": {
+      "mean": 0.991799645390071,
+      "std": 0.0019193825438485268
+    },
+    "recall_macro": {
+      "mean": 0.9913580246913579,
+      "std": 0.0021383343303319185
+    },
+    "f1_macro": {
+      "mean": 0.991394514666179,
+      "std": 0.002105758851579203
+    },
+    "loss": {
+      "mean": 0.040053489988232834,
+      "std": 0.006657029210017352
+    },
+    "n_errors": {
+      "mean": 2.3333333333333335,
+      "std": 0.5773502691896258
+    },
+    "best_epoch": {
+      "mean": 28.333333333333332,
+      "std": 2.886751345948129
+    },
+    "epochs_run": {
+      "mean": 30.0,
+      "std": 0.0
+    },
+    "train_time_s": {
+      "mean": 148.37333333333333,
+      "std": 12.472531151828534
+    },
+    "acc_multi_defect": {
+      "mean": 1.0,
+      "std": 0.0
+    }
+  },
+  "per_class": {
+    "crazing": {
+      "precision_mean": 1.0,
+      "recall_mean": 1.0,
+      "f1_mean": 1.0,
+      "f1_std": 0.0
+    },
+    "inclusion": {
+      "precision_mean": 0.9507978723404257,
+      "recall_mean": 1.0,
+      "f1_mean": 0.9747545582047685,
+      "f1_std": 0.006073109423453279
+    },
+    "patches": {
+      "precision_mean": 1.0,
+      "recall_mean": 1.0,
+      "f1_mean": 1.0,
+      "f1_std": 0.0
+    },
+    "pitted_surface": {
+      "precision_mean": 1.0,
+      "recall_mean": 0.9851851851851853,
+      "f1_mean": 0.9925093632958801,
+      "f1_std": 0.006487081676287946
+    },
+    "rolled-in_scale": {
+      "precision_mean": 1.0,
+      "recall_mean": 1.0,
+      "f1_mean": 1.0,
+      "f1_std": 0.0
+    },
+    "scratches": {
+      "precision_mean": 1.0,
+      "recall_mean": 0.9629629629629629,
+      "f1_mean": 0.981103166496425,
+      "f1_std": 0.006634515350748991
+    }
+  },
+  "confusion_matrix_sum": [
+    [
+      135,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      135,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      135,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      2,
+      0,
+      133,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      135,
+      0
+    ],
+    [
+      0,
+      5,
+      0,
+      0,
+      0,
+      130
+    ]
+  ],
+  "parameters": 389862
+}

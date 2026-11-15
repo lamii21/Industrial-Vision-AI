@@ -4,8 +4,9 @@ Plateforme de classification automatique des défauts de surface sur des tôles 
 (dataset **NEU-CLS**), avec CNN personnalisé, ResNet50 et MobileNetV2, interprétabilité
 Grad-CAM et application web (FastAPI + React).
 
-> **Statut : Phase 1 terminée** (environnement, données, split, EDA). Aucun modèle n'est
-> encore entraîné. Voir [docs/phase1.md](docs/phase1.md).
+> **Statut : Phase 2 terminée** : CNN personnalisé (baseline), 0,9951 ± 0,0021 d'accuracy en
+> **validation** sur 3 graines. Le jeu de test n'a pas encore été utilisé.
+> Voir [docs/phase1.md](docs/phase1.md) et [docs/phase2.md](docs/phase2.md).
 
 ## Principe de conformité
 
