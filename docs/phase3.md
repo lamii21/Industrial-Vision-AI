@@ -35,7 +35,7 @@ ai-engine/
 ├── configs/                   resnet50_ft, mobilenetv2_ft, mobilenetv2_scratch, resnet50_probe, mobilenetv2_probe
 ├── scripts/
 │   ├── train.py               (modifié) tous les modèles, --train-fraction, aucun écrasement, aucun téléchargement
-│   ├── download_weights.py    SEUL point de téléchargement des poids ImageNet (non exécuté à ce stade)
+│   ├── download_weights.py    SEUL point de téléchargement des poids ImageNet (exécuté le 16/11/2026, voir §6 bis)
 │   ├── benchmark_models.py    E4
 │   ├── evaluate_robustness.py E5
 │   └── compare_models.py      tableaux, comparaisons appariées, sélection, figures
@@ -121,9 +121,9 @@ La comparaison relit uniquement ces fichiers, c'est-à-dire la validation.
 
 ## 3. Tests
 
-**137 tests : 135 passent, 2 sont ignorés** (`python -m pytest`, environ 5 min, GPU disponible).
+**137 tests, tous passent, aucun ignoré** depuis le téléchargement des poids (`python -m pytest`, environ 4 min, GPU disponible). Avant ce téléchargement, les 2 tests qui comparent les poids chargés aux poids ImageNet de référence étaient ignorés.
 
-Les 2 tests ignorés comparent les poids chargés avec les poids ImageNet de référence. Ils s'activeront après `download_weights.py`.
+Le fichier ResNet50 V1 (2017) ne contient pas les 53 buffers BatchNorm `num_batches_tracked`, apparus avec PyTorch 0.4.1. PyTorch les remet à 0 au chargement strict. Ils n'ont aucun effet, car toutes les BatchNorm ont `momentum=0.1` et ces compteurs ne servent que si `momentum=None`. Le test vérifie que les seules clés absentes sont ces buffers et que tous les autres tenseurs sont identiques à la référence.
 
 | Fichier | Tests | Vérifie |
 |---|---|---|
@@ -139,7 +139,7 @@ Les 2 tests ignorés comparent les poids chargés avec les poids ImageNet de ré
 
 ```powershell
 python -m pytest                                          # 137 tests
-python scripts/download_weights.py                        # étape 4 uniquement, après autorisation
+python scripts/download_weights.py                        # déjà fait ; ne retélécharge pas si les poids sont en cache
 python scripts/train.py --config configs/resnet50_ft.yaml --seed 42
 python scripts/train.py --config configs/resnet50_ft.yaml --seed 42 --train-fraction 0.1   # -> resnet50_ft_f010
 python scripts/summarize_runs.py --experiment resnet50_ft
@@ -161,6 +161,24 @@ Aucun écart à ce stade. Précisions d'implémentation, qui n'entrent pas en co
 - latence mesurée sur le checkpoint de la graine 42 ;
 - JPEG réalisé avec Pillow ;
 - sorties dérivées dans `reports/benchmarks/phase3/`, `reports/robustness/phase3/` et `reports/comparison/phase3/`.
+
+## 6 bis. Validation pré-expérimentale (étape 3)
+
+**Poids ImageNet** : téléchargés avec `scripts/download_weights.py` dans le cache torch (`~/.cache/torch/hub/checkpoints`), hors du dépôt et non versionnés. Le SHA-256 complet de chaque fichier commence par le préfixe inscrit dans son nom (vérifié par torchvision avec `check_hash=True`, puis par le script).
+
+| Poids | Fichier | Taille | SHA-256 |
+|---|---|---|---|
+| `ResNet50_Weights.IMAGENET1K_V1` | `resnet50-0676ba61.pth` | 97,8 Mo | `0676ba61b6795bbe1773cffd859882e5e297624d384b6993f7c9e683e722fb8a` |
+| `MobileNet_V2_Weights.IMAGENET1K_V1` | `mobilenet_v2-b0353104.pth` | 13,6 Mo | `b03531047ffacf1e2488318dcd2aba1126cde36e3bfe1aa5cb07700aeeee9889` |
+
+**Non-régression du CNN** : relance complète de la phase 2 avec le code de la phase 3 (`train.py --config configs/custom_cnn.yaml --seed 42 --tag nonreg`, sorties dans `seed_42_nonreg`).
+- Le verdict de `scripts/compare_runs.py` contre `seed_42` est **`BIT-EXACT REPRODUCTION`**.
+- Historique des 52 époques identique.
+- Meilleure époque 44 dans les deux runs.
+- Prédictions et probabilités de validation identiques octet pour octet.
+- 26 tenseurs sur 26 identiques dans le checkpoint sélectionné.
+- Accuracy 0,9963 et perte de validation 0,024517, identiques.
+- Seuls diffèrent les métadonnées (date, chemins, champs `data.input` et `steps_per_epoch` ajoutés en phase 3) et le temps d'exécution : 311 s contre 283 s, sur batterie.
 
 ## 7. Résultats
 

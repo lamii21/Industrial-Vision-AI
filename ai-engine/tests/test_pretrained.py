@@ -89,8 +89,13 @@ def test_imagenet_weights_are_loaded(arch):
     m = build_torchvision_model(arch, pretrained=True)
     ref = load_imagenet_state_dict(WEIGHTS[arch])
     head = "fc." if arch == "resnet50" else "classifier.1."
+    # The 2017 ResNet50 V1 file predates the BatchNorm ``num_batches_tracked`` buffers
+    # (PyTorch 0.4.1). BatchNorm fills them in on load; they are unused with momentum=0.1.
+    missing = [k for k in m.state_dict() if k not in ref]
+    assert all(k.endswith("num_batches_tracked") for k in missing), missing
+    assert all(bn.momentum == 0.1 for bn in m.modules() if isinstance(bn, torch.nn.modules.batchnorm._BatchNorm))
     for k, v in m.state_dict().items():
-        if not k.startswith(head):
+        if not k.startswith(head) and k not in missing:
             assert torch.equal(v, ref[k]), k
 
 
